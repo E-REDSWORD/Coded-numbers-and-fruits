@@ -306,6 +306,7 @@
     .level-easy { background: rgba(0, 200, 83, 0.2); color: #00c853; border: 1px solid rgba(0, 200, 83, 0.4); }
     .level-medium { background: rgba(255, 167, 38, 0.2); color: #ffa726; border: 1px solid rgba(255, 167, 38, 0.4); }
     .level-hard { background: rgba(244, 67, 54, 0.2); color: #f44336; border: 1px solid rgba(244, 67, 54, 0.4); }
+    .level-custom { background: rgba(147, 112, 219, 0.2); color: #9370db; border: 1px solid rgba(147, 112, 219, 0.4); }
 
     .fruit-decoration {
       display: flex;
@@ -342,6 +343,103 @@
       font-size: 0.9rem;
     }
 
+    /* أنماط لوحة إدخال المعادلة */
+    .equation-input-container {
+      background: rgba(40, 40, 50, 0.7);
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 77, 77, 0.2);
+    }
+
+    .calculator {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .calc-btn {
+      padding: 15px;
+      font-size: 1.2rem;
+      background: rgba(255, 77, 77, 0.2);
+      border: 1px solid rgba(255, 77, 77, 0.3);
+      color: #f0f2f5;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .calc-btn:hover {
+      background: rgba(255, 77, 77, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .calc-btn.operator {
+      background: rgba(77, 121, 255, 0.2);
+      border-color: rgba(77, 121, 255, 0.3);
+    }
+
+    .calc-btn.equals {
+      background: rgba(77, 255, 136, 0.2);
+      border-color: rgba(77, 255, 136, 0.3);
+    }
+
+    .calc-btn.clear {
+      background: rgba(255, 167, 38, 0.2);
+      border-color: rgba(255, 167, 38, 0.3);
+    }
+
+    .equation-preview {
+      font-size: 1.5rem;
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(30, 30, 40, 0.6);
+      border-radius: 8px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .equation-input-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+
+    .equation-input-buttons button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    #add-equation {
+      background: linear-gradient(135deg, #4dff88 0%, #00b33c 100%);
+      color: white;
+    }
+
+    #add-equation:hover {
+      background: linear-gradient(135deg, #3def77 0%, #009933 100%);
+      transform: translateY(-2px);
+    }
+
+    #clear-equation {
+      background: linear-gradient(135deg, #ff4d4d 0%, #cc0000 100%);
+      color: white;
+    }
+
+    #clear-equation:hover {
+      background: linear-gradient(135deg, #ff3333 0%, #b30000 100%);
+      transform: translateY(-2px);
+    }
+
     @media (max-width: 600px) {
       .container {
         padding: 20px 15px;
@@ -362,6 +460,10 @@
       #map div {
         padding: 10px 15px;
         font-size: 1rem;
+      }
+      
+      .calculator {
+        grid-template-columns: repeat(3, 1fr);
       }
     }
   </style>
@@ -401,7 +503,45 @@
       <option value="easy">🟢 سهل (140 مثالاً)</option>
       <option value="medium">🟠 متوسط (140 مثالاً)</option>
       <option value="hard">🔴 صعب (130 مثالاً)</option>
+      <option value="custom">🔵 مخصص (معادلات المستخدم)</option>
+      <option value="new">➕ إضافة معادلة جديدة</option>
     </select>
+
+    <!-- لوحة إدخال المعادلة الجديدة -->
+    <div id="equation-input" class="equation-input-container" style="display: none;">
+      <h2 class="section-title">إضافة معادلة جديدة</h2>
+      <p>استخدم الآلة الحاسبة أدناه لإنشاء معادلة جديدة:</p>
+      
+      <div class="equation-preview" id="equation-preview"></div>
+      
+      <div class="calculator">
+        <button class="calc-btn" data-value="7">7</button>
+        <button class="calc-btn" data-value="8">8</button>
+        <button class="calc-btn" data-value="9">9</button>
+        <button class="calc-btn operator" data-value="+">+</button>
+        
+        <button class="calc-btn" data-value="4">4</button>
+        <button class="calc-btn" data-value="5">5</button>
+        <button class="calc-btn" data-value="6">6</button>
+        <button class="calc-btn operator" data-value="-">-</button>
+        
+        <button class="calc-btn" data-value="1">1</button>
+        <button class="calc-btn" data-value="2">2</button>
+        <button class="calc-btn" data-value="3">3</button>
+        <button class="calc-btn operator" data-value="×">×</button>
+        
+        <button class="calc-btn" data-value="0">0</button>
+        <button class="calc-btn clear" data-value="clear">C</button>
+        <button class="calc-btn equals" data-value="=">=</button>
+        <button class="calc-btn" data-value="(">(</button>
+        <button class="calc-btn" data-value=")">)</button>
+      </div>
+      
+      <div class="equation-input-buttons">
+        <button id="add-equation">إضافة المعادلة</button>
+        <button id="clear-equation">مسح الكل</button>
+      </div>
+    </div>
 
     <div id="examples"></div>
     
@@ -441,8 +581,18 @@
       return String(n).split("").map(d => emojiMap[d]).join("");
     }
 
+    // تحويل معادلة نصية إلى إيموجي فواكه
+    function equationToEmojis(equation) {
+      return equation.split('').map(char => {
+        if (char >= '0' && char <= '9') {
+          return emojiMap[char];
+        }
+        return char;
+      }).join('');
+    }
+
     // إنشاء الأمثلة
-    const easyExamples = [], mediumExamples = [], hardExamples = [];
+    const easyExamples = [], mediumExamples = [], hardExamples = [], customExamples = [];
 
     // سهل (140 مثالاً)
     [10,23,45,67].forEach(n => easyExamples.push({
@@ -581,9 +731,12 @@
         } else if (list === mediumExamples) {
           levelClass = "level-medium";
           levelText = "مستوى متوسط";
-        } else {
+        } else if (list === hardExamples) {
           levelClass = "level-hard";
           levelText = "مستوى صعب";
+        } else {
+          levelClass = "level-custom";
+          levelText = "مستوى مخصص";
         }
         
         box.innerHTML = `
@@ -611,11 +764,85 @@
     document.getElementById("level-select")
       .addEventListener("change", e => {
         const lvl = e.target.value;
-        if (lvl === "easy") render(easyExamples);
-        if (lvl === "medium") render(mediumExamples);
-        if (lvl === "hard") render(hardExamples);
+        const equationInput = document.getElementById("equation-input");
+        
+        if (lvl === "new") {
+          equationInput.style.display = "block";
+          document.getElementById("examples").innerHTML = "";
+        } else {
+          equationInput.style.display = "none";
+          if (lvl === "easy") render(easyExamples);
+          if (lvl === "medium") render(mediumExamples);
+          if (lvl === "hard") render(hardExamples);
+          if (lvl === "custom") render(customExamples);
+        }
       });
+
+    // إدارة إدخال المعادلة الجديدة
+    let currentEquation = "";
+    const equationPreview = document.getElementById("equation-preview");
+
+    // تحديث المعاينة
+    function updatePreview() {
+      equationPreview.innerHTML = equationToEmojis(currentEquation);
+    }
+
+    // إضافة معادلة جديدة
+    document.getElementById("add-equation").addEventListener("click", function() {
+      if (currentEquation.trim() === "") {
+        alert("يرجى إدخال معادلة أولاً!");
+        return;
+      }
+
+      try {
+        // استبدال × بـ * للحساب
+        let calcEquation = currentEquation.replace(/×/g, "*");
+        // حساب النتيجة
+        let result = eval(calcEquation);
+        
+        // إضافة المعادلة إلى القائمة المخصصة
+        customExamples.push({
+          expr: equationToEmojis(currentEquation),
+          sol: `${result}\nالشرح: ${currentEquation} = ${result}.`
+        });
+        
+        // إعادة تعيين المعادلة الحالية
+        currentEquation = "";
+        updatePreview();
+        
+        // عرض المستوى المخصص
+        document.getElementById("level-select").value = "custom";
+        render(customExamples);
+        
+        alert("تم إضافة المعادلة بنجاح!");
+      } catch (error) {
+        alert("المعادلة غير صالحة! يرجى التحقق من المعادلة المدخلة.");
+      }
+    });
+
+    // مسح المعادلة
+    document.getElementById("clear-equation").addEventListener("click", function() {
+      currentEquation = "";
+      updatePreview();
+    });
+
+    // إضافة الأزرار إلى المعادلة
+    document.querySelectorAll(".calc-btn").forEach(button => {
+      button.addEventListener("click", function() {
+        const value = this.getAttribute("data-value");
+        
+        if (value === "clear") {
+          currentEquation = "";
+        } else if (value === "=") {
+          // لا نفعل شيئاً هنا، سيتم الحساب عند الضغط على إضافة المعادلة
+          return;
+        } else {
+          currentEquation += value;
+        }
+        
+        updatePreview();
+      });
+    });
   </script>
 </body>
 </html>
-
